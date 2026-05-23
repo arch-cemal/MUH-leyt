@@ -24,9 +24,9 @@ jobs:
         pip install pyinstaller
         pip install fastapi uvicorn sqlalchemy matplotlib pandas openpyxl reportlab
 
-    - name: Build Single EXE File with Embedded Resources
+    - name: Build Single EXE File with Existing Resources
       run: |
-        pyinstaller --onefile --windowed --name="Steel_Cutting_Optimizer" --add-data "steel_cutting_db.sqlite;." --add-data "cutting_patterns.png;." --add-data "summary_chart.png;." steel_cutting_app.py
+        pyinstaller --onefile --windowed --name="Steel_Cutting_Optimizer" --add-data "steel_cutting_db.sqlite;." --add-data "summary_chart.png;." steel_cutting_app.py
 
     - name: Upload Executable Artifact
       uses: actions/upload-artifact@v4
