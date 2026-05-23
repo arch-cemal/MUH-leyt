@@ -1,0 +1,35 @@
+name: Build Advanced Steel Cutting App
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Install All Dependencies from README
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyinstaller
+        pip install fastapi uvicorn sqlalchemy matplotlib pandas openpyxl reportlab
+
+    - name: Build Single EXE File with Embedded Resources
+      run: |
+        pyinstaller --onefile --windowed --name="Steel_Cutting_Optimizer" --add-data "steel_cutting_db.sqlite;." --add-data "cutting_patterns.png;." --add-data "summary_chart.png;." steel_cutting_app.py
+
+    - name: Upload Executable Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: Steel-Cutting-System-Application
+        path: dist/Steel_Cutting_Optimizer.exe
